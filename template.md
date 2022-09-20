@@ -64,3 +64,117 @@ tail(litters_df)
     ## 6 Low8  #110                25.5        42.7          20       7       0       6
     ## # … with abbreviated variable names ¹​pups_born_alive, ²​pups_dead_birth,
     ## #   ³​pups_survive
+
+``` r
+skimr::skim(litters_df)
+```
+
+|                                                  |            |
+|:-------------------------------------------------|:-----------|
+| Name                                             | litters_df |
+| Number of rows                                   | 49         |
+| Number of columns                                | 8          |
+| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_   |            |
+| Column type frequency:                           |            |
+| character                                        | 2          |
+| numeric                                          | 6          |
+| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ |            |
+| Group variables                                  | None       |
+
+Data summary
+
+**Variable type: character**
+
+| skim_variable | n_missing | complete_rate | min | max | empty | n_unique | whitespace |
+|:--------------|----------:|--------------:|----:|----:|------:|---------:|-----------:|
+| group         |         0 |             1 |   4 |   4 |     0 |        6 |          0 |
+| litter_number |         0 |             1 |   3 |  15 |     0 |       49 |          0 |
+
+**Variable type: numeric**
+
+| skim_variable   | n_missing | complete_rate |  mean |   sd |   p0 |   p25 |   p50 |   p75 | p100 | hist  |
+|:----------------|----------:|--------------:|------:|-----:|-----:|------:|------:|------:|-----:|:------|
+| gd0_weight      |        15 |          0.69 | 24.38 | 3.28 | 17.0 | 22.30 | 24.10 | 26.67 | 33.4 | ▃▇▇▆▁ |
+| gd18_weight     |        17 |          0.65 | 41.52 | 4.05 | 33.4 | 38.88 | 42.25 | 43.80 | 52.7 | ▃▃▇▂▁ |
+| gd_of_birth     |         0 |          1.00 | 19.65 | 0.48 | 19.0 | 19.00 | 20.00 | 20.00 | 20.0 | ▅▁▁▁▇ |
+| pups_born_alive |         0 |          1.00 |  7.35 | 1.76 |  3.0 |  6.00 |  8.00 |  8.00 | 11.0 | ▁▃▂▇▁ |
+| pups_dead_birth |         0 |          1.00 |  0.33 | 0.75 |  0.0 |  0.00 |  0.00 |  0.00 |  4.0 | ▇▂▁▁▁ |
+| pups_survive    |         0 |          1.00 |  6.41 | 2.05 |  1.0 |  5.00 |  7.00 |  8.00 |  9.0 | ▁▃▂▇▇ |
+
+‘read_csv’ options..
+
+``` r
+read_csv('data/FAS_litters.csv', na = c("", "NA", 999, 88), skip = 2)
+```
+
+    ## Rows: 47 Columns: 8
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (2): Con7, #1/2/95/2
+    ## dbl (6): 27, 42, 19, 8, 0, 7
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+    ## # A tibble: 47 × 8
+    ##    Con7  `#1/2/95/2`      `27`  `42`  `19`   `8`   `0`   `7`
+    ##    <chr> <chr>           <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+    ##  1 Con7  #5/5/3/83/3-3    26    41.4    19     6     0     5
+    ##  2 Con7  #5/4/2/95/2      28.5  44.1    19     5     1     4
+    ##  3 Con7  #4/2/95/3-3      NA    NA      20     6     0     6
+    ##  4 Con7  #2/2/95/3-2      NA    NA      20     6     0     4
+    ##  5 Con7  #1/5/3/83/3-3/2  NA    NA      20     9     0     9
+    ##  6 Con8  #3/83/3-3        NA    NA      20     9     1     8
+    ##  7 Con8  #2/95/3          NA    NA      20     8     0     8
+    ##  8 Con8  #3/5/2/2/95      28.5  NA      20     8     0     8
+    ##  9 Con8  #5/4/3/83/3      28    NA      19     9     0     8
+    ## 10 Con8  #1/6/2/2/95-2    NA    NA      20     7     0     6
+    ## # … with 37 more rows
+
+``` r
+?read_csv
+# can also set variable type
+```
+
+## Other file formats
+
+We need to read in an excel spreadsheet…
+
+``` r
+mlb_df <- read_excel('data/mlb11.xlsx')
+```
+
+``` r
+view(mlb_df)
+```
+
+``` r
+lotr_words_df <-
+  read_excel(
+    'data/LotR_Words.xlsx',
+    range = "B3:D6"
+  )
+```
+
+## Still more formats …
+
+Read in SAS dataset
+
+``` r
+pulse_df <- read_sas('data/public_pulse_data.sas7bdat')
+```
+
+## Data Export
+
+``` r
+write_csv(lotr_words_df, file = 'data/lotr_words_df.csv')
+```
+
+## Why not base r???
+
+``` r
+dont_do_this_df <- read.csv('data/FAS_litters.csv')
+```
+
+read.csv saves as data.frame, forces format but not able to change
+ALWAYS use read_csv
