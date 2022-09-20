@@ -66,7 +66,7 @@ pulse_df <- read_sas('data/public_pulse_data.sas7bdat')
 ## Data Export
 
 ```{r}
-write_csv(lotr_words_df, file = 'data/lotr_words_df.csv')
+write_csv(lotr_words_df, file = 'data/results/lotr_words_df.csv')
 ```
 
 ## Why not base r???
@@ -76,6 +76,8 @@ dont_do_this_df <- read.csv('data/FAS_litters.csv')
 read.csv saves as data.frame, forces format but not able to change
 ALWAYS use read_csv
 
-
+## Git ignore
+anything typed into file will be ignored and won't be uploaded to GitHub (i.e patient data)
+make sure to save/commit/push
 
 
