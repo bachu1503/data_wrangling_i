@@ -1,0 +1,14 @@
+---
+title: "Session 4: Data Manipulation"
+output:   
+  github_document:
+  # or pdf_document or work_document
+---
+
+```{r, echo = FALSE}
+library(tidyverse)
+library(readxl)
+library(haven)
+```
+
+
