@@ -1,0 +1,66 @@
+---
+title: "Session 5: Tidy"
+output:   
+  github_document:
+  # or pdf_document or work_document
+---
+
+```{r, echo = FALSE}
+library(tidyverse)
+library(readxl)
+library(haven)
+options(tibble.print_min = 5)
+```
+
+## Data Import: CSVs
+```{r}
+pulse_df <- haven::read_sas('data/public_pulse_data.sas7bdat') %>% 
+  janitor::clean_names()
+
+```
+
+With our new understanding of tidy data, we quickly recognize a problem: the BDI score is spread across four columns, which correspond to four observation times. We can fix this problem using pivot_longer:
+
+There are also some additional transformations needed to wrap up the data wrangling process, like changing bl to 00m for consistency across visits and converting visit to a factor variable. (It’s possible that you would want visit to be a numeric variable instead, which could be done with a different call to mutate.) Lastly, it’s nice to organize the data into a reasonable order.
+
+Altogether, then, the code below will import, tidy, and transform the PULSE dataset into a usable format:
+
+```{r}
+pulse_df <- haven::read_sas('data/public_pulse_data.sas7bdat') %>% 
+  janitor::clean_names() %>% 
+  pivot_longer(
+    bdi_score_bl:bdi_score_12m, # columns
+    names_to = "visit", # name of new variable
+    values_to = "bdi", # name of column where values go
+    names_prefix = "bdi_score_" # removes string "bdi_score_" 
+  ) %>%
+  relocate(visit) %>%
+  mutate(
+    visit = replace(visit, visit == "bl", "00m"), # replace "bl" with "00m"
+    visit = as.factor(visit) # visit as categorical
+  ) %>%
+  arrange(id, visit)
+
+print(pulse_df, n = 12)
+```
+
+Learning Assessment: In the litters data, the variables gd0_weight and gd18_weight give the weight of the mother mouse on gestational days 0 and 18. Write a data cleaning chain that retains only litter_number and these columns; produces new variables gd and weight; and makes gd a numeric variable taking values 0 and 18 (for the last part, you might want to use recode …). Is this version “tidy”?
+
+```{r}
+litters <- read_csv("data/FAS_litters.csv") %>%
+  janitor::clean_names() %>%
+  select(litter_number, ends_with("weight")) %>%
+  pivot_longer(
+    gd0_weight:gd18_weight,
+    names_to = "gd",
+    values_to = "weight"
+  ) %>%
+  mutate(
+    gd = recode(gd, "gd0_weight" = 0, "gd18_weight" = 18) # recodes  values
+  )
+```
+
+
+
+
+
